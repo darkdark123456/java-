@@ -1,0 +1,125 @@
+/*
+ * @author: MENG ZHEN CHUAN
+ * @date: do not edit
+ * @description: HADOOP Project
+ * @method: note
+ */
+package com.hadoop;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException; 
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.LocatedFileStatus;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.RemoteIterator;
+
+// 通过客户端访问集群
+public class hdfsClient {
+    public static FileSystem fileSystem;
+
+    //初始化连接的HDFS客户端 并用configuration对象配置HDFS的信息
+    public  static void initHdfsClient() throws IOException,URISyntaxException,InterruptedException {
+        org.apache.hadoop.conf.Configuration configuration=new Configuration();
+        fileSystem=FileSystem.get(new URI("hdfs://hadoop102:8020"), configuration, "atguigu");
+    }
+
+    // 对HDFS客户端的操作
+
+        // 创建一个文件夹
+    public static void mkdirsOnHdfsClient() throws IllegalArgumentException, IOException{
+        fileSystem.mkdirs(new Path("/xiyou/huaguoshan"));
+        System.out.println("********************创建文件夹成功********************");
+        closeHdfsClient();
+    }
+
+        // 上传文件
+    public static void copyFromLocalFile() throws IOException, InterruptedException, URISyntaxException{
+        fileSystem=null;
+        Configuration configuration=new Configuration();
+        configuration.set("dfs.replication", "1");
+        fileSystem=FileSystem.get(new URI("hdfs://hadoop102:8020"),configuration,"atguigu");
+        fileSystem.copyFromLocalFile(new Path("C:/Users/Administrator/Desktop/test.txt"), new Path("/xiyou/"));
+        closeHdfsClient();
+    }
+
+    // 文件下载
+    public static void copyToLocalFile() throws IOException, URISyntaxException, InterruptedException {
+        initHdfsClient();
+        fileSystem.copyToLocalFile(false, new Path("/xiyou/test.txt"), 
+                                   new Path("C:/downloadDataFromHdfs"), true);
+        closeHdfsClient();
+    }
+
+    //关闭HDFS客户端
+    public static void closeHdfsClient() throws IOException{
+        fileSystem.close();
+    }
+
+    // 修改文件名称
+    public static void renameFile() throws IOException, URISyntaxException, InterruptedException{
+        initHdfsClient();
+        fileSystem.rename(new Path("/xiyou/test.txt"),new Path("/xiyou/poetry.txt"));
+        closeHdfsClient();
+
+    }
+
+    // 移动文件
+    public static void moveFile() throws IOException, URISyntaxException, InterruptedException{
+        initHdfsClient();
+        fileSystem.rename(new Path("/xiyou/poetry.txt"),new Path("/sanguo/poetry.txt"));
+        closeHdfsClient();
+    }
+
+    // 删除目录或文件
+
+    public static void deleteFile() throws IOException, URISyntaxException, InterruptedException{
+        initHdfsClient();
+        fileSystem.delete(new Path("/xiyou"), true);
+        closeHdfsClient();
+    }
+
+    // 遍历目录树查找文件  有一根指针
+    public static void getFileInformation() throws IOException, URISyntaxException, InterruptedException{
+        initHdfsClient();
+        RemoteIterator<LocatedFileStatus> fIterator=fileSystem.listFiles(new Path("/"), true);
+        while(fIterator.hasNext()){
+            LocatedFileStatus locatedFileStatus=fIterator.next();
+            System.out.println("*******************当前文件的路径是 "+locatedFileStatus.getPath());
+            System.out.println("*******************当前文件的名字 "+locatedFileStatus.getPath().getName());
+            System.out.println("*******************当前文件的块大小 "+locatedFileStatus.getBlockSize());
+            System.out.println("*******************当前文件的所有者"+locatedFileStatus.getOwner());
+            System.out.println("*******************当前文件的权限"+locatedFileStatus.getPermission());
+            System.out.println("*******************当前文件的最后修改时间"+locatedFileStatus.getModificationTime());
+        }
+        closeHdfsClient();
+    }
+    
+    //判断当前指向的是文件还是文件夹
+
+    public static void listStatus() throws IOException, URISyntaxException, InterruptedException,FileNotFoundException{
+        initHdfsClient();
+        FileStatus[] fileStatus=fileSystem.listStatus(new Path("/sanguo"));
+        for (FileStatus filestatus : fileStatus) {
+            if(filestatus.isFile()){
+                System.out.println("***************file "+filestatus.getPath().getName());
+            }
+            else{
+                System.out.println("***************dir "+filestatus.getPath().getName());
+            }
+        }
+        closeHdfsClient();
+    }
+
+
+
+
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
+        hdfsClient.listStatus();
+        System.out.println("*************语句执行完毕**************");
+    }
+}
