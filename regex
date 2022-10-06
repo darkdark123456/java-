@@ -1,0 +1,117 @@
+regex表达式的学习一些重要的点
+1 "y.+u"
+/**匹配的是一个以y开头u结尾中间有[1-N]个字符的字符串*/
+I remember [your appearance last autumn, 
+grey beret, and calm heart. The sunset flame is fighting in your eyes. 
+Leaves fall to the surface of your soul. 
+You are like a creeper clinging to my arms, 
+and the leaves collect your slow and quiet voice. 
+A stunned campfire burning with my longing. 
+The sweet blue hyacinth that twines my soul. 
+I feel that your glasses are roaming, 
+and autumn is gone: gray berets, bird songs, 
+and house like hearts - I deeply desire to migrate there, 
+and my kisses are as happy as coals of fire. 
+The sky of ships, the paths of mountains; 
+Your memory is made up of light, smoke and peaceful pond! 
+There are thousands of rays burning in your glasses. 
+Autumn leaves revolve around your sou]l.
+A garage is a good place to park a car.
+/**用来选择性的匹配*/
+2 [longing\.?] 
+A stunned campfire burning with my [longing.]
+
+3 简写的匹配规则
+
+.     匹配除换行符以外的所有单个字符
+\w    匹配所有字母数字
+\W    匹配所有非字母数字 =="^\w"
+\d    匹配所有的数字
+\D    匹配所有的非数字
+\s    匹配所有空格字符
+\f    匹配一个换页符
+\n    匹配一个换行符
+\r    匹配一个回车符
+\t    匹配一个制表符
+
+4 左右判断
+
+正先行断言 ?=...  在右边判断
+格式 ： (匹配规则)(?=...)
+(t|T)he(?=\scar)
+[The] car is parked in the garage.
+[The] car is parked in the garage.
+匹配The或者the字符串，但后面被限制，后面必须紧跟着\scar
+
+  负先行断言
+格式：(匹配规则)(?!..)
+(t|T)he(?!\sfat)
+[The] car is parked in [the] garage.
+The fat cat sat on [the] mat.
+
+  正后发断言 在左边判断
+格式：(匹配规则)(?<=...)
+(?<=(T|t)he\s)(fat|mat)
+The fat cat sat on the mat.
+匹配fat或者mat字符串，前面必须跟着the\s或者The\s
+The [fat] cat sat on the [mat].
+
+  负后发断言
+格式：(匹配规则)(?<！...)
+(?<!(T|t)he\s)(fat|mat|is)
+
+The fat cat sat on the mat.
+The car is parked in the garag
+
+The fat cat sat on the mat.
+The car [is] parked in the garag
+匹配fat或mat或is字符串，前面必须不跟着the\s或The\s
+
+5 模式修正符
+  g 全局
+  i 忽略大小写
+  m 多行修饰符
+(at(.)?$)/g模式 只匹配最后一个符合条件的
+The
+fat
+cat sat
+on the mat.
+
+The
+fat
+cat sat
+on the mat.
+
+
+(at(.)?$)/gm模式 多行模式，每一行符合条件的都匹配到
+
+The
+fat
+cat sat
+on the mat.
+
+The
+[fat]
+cat [sat]
+on the [mat.]
+
+6贪婪匹配与惰性匹配
+正则表达式默认使用贪婪匹配，尽可能多的匹配字符串，使用？将贪婪匹配转化为惰性匹配
+
+贪婪匹配，匹配最后一个at其前面一堆字符串
+(.*at)
+The fat cat sat on the mat.
+[the fat cat sat on the mat.]
+惰性匹配，匹配第一个at其左边一堆字符串
+(.*?at)
+The fat cat sat on the mat.
+[the fat] cat sat on the mat.
+  
+  
+  
+  
+    
+
+
+
+
