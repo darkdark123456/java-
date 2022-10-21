@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<allocations>
+	<!--每个队列中AppMaster占用最大资源的比例-->
+	<queueMaxAMShareDefault>0.5</queueMaxAMShareDefault>
+	<!--单个队列的最大默认值-->
+	<queueMaxResourcesDefault>2048mb,2vcores</queueMaxResourcesDefault>
+
+	<!--增加一个用户队列meng-->
+	<queue name="meng">
+		<!--queue的获得的最小资源-->
+		<minResources>1024mb,1vcores</minResources>
+		<!--queue获得的最大资源-->
+		<maxResources>2048mb,2vcores</maxResources>
+		<!--一个队列中能运行的任务数-->
+		<maxRunningApps>4</maxRunningApps>
+		<!--AM占用队列的资源的比例-->
+		<maxAMShare>0.5</maxAMShare>
+		<!--queue的权重，默认为1-->
+		<weight>1</weight>
+		<!--queue的资源分配策略，为公平-->
+		<schedulingPolicy>fair</schedulingPolicy>
+	</queue>
+
+	<!-- 增加一个atguigu队列 参数的含义如上-->
+	<queue name="atguigu" type="parent">
+		<minResources>1024mb,1vcores</minResources>
+		<maxResources>2048mb,2vcores</maxResources>
+		<maxRunningApps>4</maxRunningApps>
+		<maxAMShare>0.5</maxAMShare>
+		<weight>1.0</weight>
+		<schedulingPolicy>fair</schedulingPolicy>
+	</queue>
+
+	<!--queue的安置策略-->
+	<queuePlacementPolicy>
+		<!-- 提交任务时指定队列，如果指定队列不存在，不允许自动创建,如果未指定队列则继续如下匹配规则-->
+		<rule name="specified" create="false" />
+		<!-- 提交到root.group.username队列，若用户组root.group不存在不允许自动创建，若root.group.user用户名不存在，允许自动创建-->
+		<rule name="nestedUserQueue" create="true">
+			<rule name="primaryGroup" create="false" />
+		</rule>
+		<!-- 最后一个匹配规则必须为reject或者default，代表任务提交到队列失败，或者将任务提交到default队列-->
+		<rule name="reject" />
+	</queuePlacementPolicy>
+	
+
+
+</allocations>
