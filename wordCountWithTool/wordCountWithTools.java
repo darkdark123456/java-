@@ -27,6 +27,7 @@ public class wordCountWithTools implements Tool{
     public Configuration getConf() {
         return this.configuration;
     }
+    /**重写的run方法完成了Driver的大部分功能，只需在Driver里创建一个tool对象在调用run方法，完成大部分功能*/
 
     @Override
     public int run(String[] args) throws Exception {
