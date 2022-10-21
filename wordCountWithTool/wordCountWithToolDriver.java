@@ -13,17 +13,18 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 public class wordCountWithToolDriver {
+    /**声明一个tool接口*/
     private static Tool tool;
     public static void main(String[] args) {
         Configuration configuration=new Configuration();
         switch(args[0]){
-            case "wordCountWithTool":
-            tool=new wordCountWithTools();
+            case "wordCountWithTool":/**在这里修改你的main方法所在的类*/
+            tool=new wordCountWithTools();/**实例化一个tool接口*/
             break;
             default:
                 throw new RuntimeException("没有tool接口");
         }
-        try {
+        try {/**尝试用实例化的tool接口调用重写的run方法*/
             int runResult=ToolRunner.run(configuration, tool,Arrays.copyOfRange(args,1, args.length));
             System.exit(runResult);
         } catch (Exception e) {
