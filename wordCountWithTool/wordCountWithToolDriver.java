@@ -25,6 +25,7 @@ public class wordCountWithToolDriver {
                 throw new RuntimeException("没有tool接口");
         }
         try {/**尝试用实例化的tool接口调用重写的run方法*/
+            /**在使用hadoop jar jar包 mainClass -D mapreduce.job.queuename=hive /input /output ---> array存放的是[mainClass,/input /output]*/
             int runResult=ToolRunner.run(configuration, tool,Arrays.copyOfRange(args,1, args.length));
             System.exit(runResult);
         } catch (Exception e) {
