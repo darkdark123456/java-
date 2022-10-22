@@ -4,6 +4,7 @@
  * @description: HADOOP Project
  * @method: note
  */
+/**如果你想要将job提交到自定义的队列，并且在hadoop报input 或者output路径异常时，你应该试着完善tool接口*/
 package com.mapreduce.wordCountWithTool;
 
 import java.util.Arrays;
