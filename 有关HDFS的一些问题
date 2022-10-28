@@ -1,9 +1,0 @@
-1 用win10操作hadoop集群   *
-2 一些 hadoop dfs命令 *
-3 利用vscode编译器可以对hdfs-site.xml的一些参数进行修改 也可以在类中使用Configuration对象修改；生效的顺序： vscode里的hdfs-site.xml > Con对象 > 集群中的hdfs-site.xml > hdfs-default.xml
-4 HDFS 如何使用CRC校验保证数据的完整性？采用CRC32进行校验，和计算机网络的crc校验原理相同
-5 HDFS的读写流程*
-6 namenode和 2nn的工作机制，老板挂了后，小秘到底能干什么？*
-7 Datanode的工作机制*
-8 HDFS写数据时namenode 如何选择datanode？*
-9 副本的存储节点该如何选择？*
