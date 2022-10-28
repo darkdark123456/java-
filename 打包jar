@@ -1,0 +1,5 @@
+在com.mapreduce.xxxxx下存放着javac编译后的class文件
+在com的同级目录中写一个MF文件，配置
+Manifest-Version: 1.0
+Main-Class: com.mapreduce.xxxxx.main类
+并使用在cmd中使用， jar cfm jar包名 MF文件 xxx.class
