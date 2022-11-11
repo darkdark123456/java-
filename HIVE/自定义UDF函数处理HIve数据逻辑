@@ -18,16 +18,13 @@ public class Lower extends UDF{
 3 打包为jar包 并上传到hadoop文件路径
 4 创建临时函数与java class关联 create temporary function mylower as "com.atguigu.hive.Lower";
 5 在hive中使用临时函数 select ename, mylower(ename) lowername from emp;
-
+缺点 每次处理一个数据都要返回一个值，很是烦躁
 
 
 public class Lower extends UDF{ 
     private sum=0;
-    private time=0;
-    public int evaluate(final int value,int rows){
-    while(time++<rows){
-        sum+=value;
-    }
+    public int evaluate(final int value){
+    sum+=value;
     return sum;
     public static void main(String[] args) {
         
