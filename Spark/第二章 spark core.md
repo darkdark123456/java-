@@ -76,3 +76,18 @@ if __name__ == '__main__':
 ```
 
 3 案例实操
+class PySpark:
+    def __init__(self):
+        self.conf=SparkConf().setMaster("local[*]").setAppName("XJob")
+        self.sparkContext=SparkContext(conf=self.conf)     
+    def processData(self):
+        RDD=self.sparkContext.textFile("hdfs://hadoop102:8020/input/order.text")
+        RDD1=RDD.flatMap(lambda value: value.split("|"))
+        jsonDictRDD=RDD1.map(lambda value :json.loads(value))
+        beijingRDD=jsonDictRDD.filter(lambda value: value["areaName"]=="北京")
+        resultRDD=beijingRDD.map(lambda value:value["areaName"]+"_"+value["category"]+"_"+value["money"])
+        print(resultRDD.collect())
+        
+if __name__ == '__main__':
+    pySpark=PySpark()
+    pySpark.processData()
